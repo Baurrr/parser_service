@@ -27,7 +27,7 @@ class ParserController(
         @RequestBody xmlString: String
     ): ResponseEntity<Any> {
         return if (secret == SECRET) {
-            service.xmlToJson(xmlString)
+            ResponseEntity.ok(service.xmlToJson(xmlString))
         } else {
             ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
         }
@@ -39,7 +39,7 @@ class ParserController(
         @RequestBody jsonString: String
     ): ResponseEntity<Any> {
         return if (secret == SECRET) {
-            service.jsonToXmlInTag(jsonString)
+            ResponseEntity.ok(service.jsonToXml(jsonString))
         } else {
             ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
         }

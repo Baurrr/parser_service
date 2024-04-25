@@ -1,33 +1,28 @@
 package kz.parser.service.domain
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
 import org.json.JSONArray
 import org.json.JSONObject
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
 class ParserService {
 
-    fun xmlToJson(xmlString: String): ResponseEntity<Any> {
+    fun xmlToJson(xmlString: String): String {
         try {
             val xmlMapper = XmlMapper()
             val dataMap: Map<String, Any> = xmlMapper.readValue(xmlString, Map::class.java) as Map<String, Any>
             val objectMapper = ObjectMapper()
             val jsonString = objectMapper.writeValueAsString(dataMap)
-            return ResponseEntity.ok(jsonString)
+            return jsonString
         } catch (e: Exception) {
             e.printStackTrace()
-            return ResponseEntity.badRequest().body(e.message)
+            return e.message.toString()
         }
     }
 
-    fun jsonToXmlInTag(jsonString: String): ResponseEntity<Any> {
+    fun jsonToXml(jsonString: String): String {
         try {
             val json = JSONObject(jsonString)
             val xmlBuilder = StringBuilder()
@@ -67,11 +62,10 @@ class ParserService {
             }
 
             parseObject(json)
-
             val xmlString = xmlBuilder.toString()
-            return ResponseEntity.ok(xmlString)
+            return xmlString
         } catch (e: Exception) {
-            return ResponseEntity.badRequest().body(e.message)
+            return e.message.toString()
         }
     }
 
