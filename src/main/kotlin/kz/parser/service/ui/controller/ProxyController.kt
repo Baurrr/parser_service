@@ -3,14 +3,9 @@ package kz.parser.service.ui.controller
 import kz.parser.service.domain.ProxyService
 import kz.parser.service.ui.dto.RequestExample
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/request")
@@ -20,30 +15,50 @@ class ProxyController(
 
     @PostMapping
     fun post(
+        @RequestHeader("Secret") secret: String,
         @RequestBody requestExample: RequestExample
     ): ResponseEntity<Any> {
-        return proxyService.makeRequest(requestExample, HttpMethod.POST)
+        return if (ParserController.SECRET == secret) {
+            proxyService.makeRequest(requestExample, HttpMethod.POST)
+        } else {
+            ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
+        }
     }
 
     @PutMapping
     fun put(
+        @RequestHeader("Secret") secret: String,
         @RequestBody requestExample: RequestExample
     ): ResponseEntity<Any> {
-        return proxyService.makeRequest(requestExample, HttpMethod.PUT)
+        return if (ParserController.SECRET == secret) {
+            proxyService.makeRequest(requestExample, HttpMethod.PUT)
+        } else {
+            ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
+        }
     }
 
     @DeleteMapping
     fun delete(
+        @RequestHeader("Secret") secret: String,
         @RequestBody requestExample: RequestExample
     ): ResponseEntity<Any> {
-        return proxyService.makeRequest(requestExample, HttpMethod.DELETE)
+        return if (ParserController.SECRET == secret) {
+            proxyService.makeRequest(requestExample, HttpMethod.DELETE)
+        } else {
+            ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
+        }
     }
 
     @GetMapping
     fun get(
+        @RequestHeader("Secret") secret: String,
         @RequestBody requestExample: RequestExample
     ): ResponseEntity<Any> {
-        return proxyService.makeRequest(requestExample, HttpMethod.GET)
+        return if (ParserController.SECRET == secret) {
+            proxyService.makeRequest(requestExample, HttpMethod.GET)
+        } else {
+            ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Method not allowed")
+        }
     }
 
 }
