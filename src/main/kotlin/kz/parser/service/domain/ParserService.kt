@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import org.json.JSONArray
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class ParserService {
+
+    final val logger = LoggerFactory.getLogger(ParserService::class.java)
 
     fun xmlToJson(xmlString: String): String {
         try {
@@ -26,6 +29,8 @@ class ParserService {
         try {
             val json = JSONObject(jsonString)
             val xmlBuilder = StringBuilder()
+
+            xmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
 
             fun parseObject(json: JSONObject) {
                 for (key in json.keys()) {
