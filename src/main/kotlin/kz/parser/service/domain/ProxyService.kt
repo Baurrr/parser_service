@@ -1,5 +1,6 @@
 package kz.parser.service.domain
 
+import com.google.gson.Gson
 import kz.parser.service.ui.dto.RequestExample
 import org.springframework.http.*
 import org.springframework.stereotype.Service
@@ -11,7 +12,7 @@ class ProxyService(
 ) {
 
     fun makeRequest(request: RequestExample, httpMethod: HttpMethod): ResponseEntity<Any> {
-        val xmlBody = request.body?.let { parser.jsonToXml(it) }
+        val xmlBody = request.body?.let { parser.jsonToXml(Gson().toJson(it).toString()) }
         val headers = HttpHeaders()
         request.headers.forEach { header ->
             headers.add(header.name, header.value)
@@ -21,11 +22,7 @@ class ProxyService(
         val restTemplate = RestTemplate()
         val response = restTemplate.exchange(request.url, httpMethod, httpEntity, String::class.java)
         val jsonResponse = parser.xmlToJson(response.body ?: "")
-        val responseHeaders = HttpHeaders()
-        response.headers.forEach { (key, values) ->
-            responseHeaders.addAll(key, values)
-        }
-        return ResponseEntity(jsonResponse, responseHeaders, response.statusCode)
+        return ResponseEntity.status(response.statusCode).contentType(MediaType.TEXT_PLAIN).body(jsonResponse)
     }
 
 }

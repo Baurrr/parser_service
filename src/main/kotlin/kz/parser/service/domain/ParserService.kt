@@ -26,12 +26,11 @@ class ParserService {
     }
 
     fun jsonToXml(jsonString: String): String {
+        logger.info("JSON FOR XML: $jsonString")
         try {
             val json = JSONObject(jsonString)
             val xmlBuilder = StringBuilder()
-
             xmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-
             fun parseObject(json: JSONObject) {
                 for (key in json.keys()) {
                     val value = json.get(key)

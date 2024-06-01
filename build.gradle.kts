@@ -33,6 +33,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 	implementation ("org.json:json:20210307")
+	implementation("com.google.code.gson:gson:2.8.8")
 
 
 }
